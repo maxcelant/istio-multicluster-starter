@@ -2,6 +2,8 @@
 
 ### Basic Architecture
 
+>![image](https://github.com/user-attachments/assets/4e05f0bc-e09f-4340-9fd4-7b43ca88bb52)
+
 
 ### How to run
 
