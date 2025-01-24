@@ -39,17 +39,17 @@ keast label namespace istio-system \
 istioctl --context="kind-east-cluster" install -y -f controlplanes/cluster-east.yaml
 istioctl --context="kind-west-cluster" install -y -f controlplanes/cluster-west.yaml
 
-kwest create ns test
-kwest label namespace test istio-injection=enabled
-kwest -n test apply -f apps/webapp-deployment-svc.yaml
-kwest -n test apply -f apps/webapp-gw-vs.yaml
-kwest -n test apply -f apps/catalog-svc.yaml
+kwest create ns istioinaction
+kwest label namespace istioinaction istio-injection=enabled
+kwest -n istioinaction apply -f apps/webapp-deployment-svc.yaml
+kwest -n istioinaction apply -f apps/webapp-gw-vs.yaml
+kwest -n istioinaction apply -f apps/catalog-svc.yaml
 kwest -n default apply -f apps/sleep.yaml
 
-keast create ns test
-keast label namespace test istio-injection=enabled
-keast -n test apply -f apps/catalog.yaml
-kwest -n default apply -f apps/sleep.yaml
+keast create ns istioinaction
+keast label namespace istioinaction istio-injection=enabled
+keast -n istioinaction apply -f apps/catalog.yaml
+keast -n default apply -f apps/sleep.yaml
 
 WEST_CLUSTER_ID=$(docker ps --filter "name=west-cluster" --format "{{.ID}}")
 EAST_CLUSTER_ID=$(docker ps --filter "name=east-cluster" --format "{{.ID}}")
