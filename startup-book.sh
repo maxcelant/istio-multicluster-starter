@@ -41,8 +41,10 @@ keast create ns test
 keast label namespace test istio-injection=enabled
 keast -n test apply -f book/apps/catalog.yaml
 
-WEST_NETWORK_IP=$(docker ps --format 'json' | jq -r '.Ports' | sed -n '1p' | cut -f1 -d "-")
-EAST_NETWORK_IP=$(docker ps --format 'json' | jq -r '.Ports' | sed -n '2p' | cut -f1 -d "-")
+WEST_CLUSTER_ID=$(docker ps --filter "name=west-cluster" --format "{{.ID}}")
+EAST_CLUSTER_ID=$(docker ps --filter "name=east-cluster" --format "{{.ID}}")
+WEST_CLUSTER_IP=$(docker inspect $WEST_CLUSTER_ID | jq -r '.[0].NetworkSettings.Networks.kind.IPAddress')
+EAST_CLUSTER_IP=$(docker inspect $EAST_CLUSTER_ID | jq -r '.[0].NetworkSettings.Networks.kind.IPAddress')
 
-istioctl create-remote-secret --name="east-cluster" --context="kind-east-cluster" --server="https://${EAST_NETWORK_IP}" | kwest apply -f -
-istioctl create-remote-secret --name="west-cluster" --context="kind-west-cluster" --server="https://${WEST_NETWORK_IP}" | keast apply -f -
+istioctl create-remote-secret --name="east-cluster" --context="kind-east-cluster" --server="https://${EAST_CLUSTER_IP}" | kwest apply -f -
+istioctl create-remote-secret --name="west-cluster" --context="kind-west-cluster" --server="https://${WEST_CLUSTER_IP}" | keast apply -f -
