@@ -16,19 +16,19 @@ kwest rollout status deploy -n metallb-system controller
 keast apply -f metallb/east-lb.yaml
 kwest apply -f metallb/west-lb.yaml
 
-kwest create namespace istio-system || true
+kwest create namespace istio-system 
 kwest create secret generic cacerts -n istio-system \
     --from-file=certs/west-cluster/ca-cert.pem \
     --from-file=certs/west-cluster/ca-key.pem \
     --from-file=certs/root-cert.pem \
-    --from-file=certs/west-cluster/cert-chain.pem || true
+    --from-file=certs/west-cluster/cert-chain.pem 
 
-keast create namespace istio-system || true
+keast create namespace istio-system 
 keast create secret generic cacerts -n istio-system \
     --from-file=certs/east-cluster/ca-cert.pem \
     --from-file=certs/east-cluster/ca-key.pem \
     --from-file=certs/root-cert.pem \
-    --from-file=certs/east-cluster/cert-chain.pem || true
+    --from-file=certs/east-cluster/cert-chain.pem 
 
 kwest label namespace istio-system \
     topology.istio.io/network="west-network"
