@@ -8,6 +8,14 @@ kind create cluster --config "book/cluster/cluster-west.yaml" --name west-cluste
 alias keast='kubectl --context="kind-east-cluster"'
 alias kwest='kubectl --context="kind-west-cluster"'
 
+keast apply -f https://raw.githubusercontent.com/metallb/metallb/v0.14.5/config/manifests/metallb-native.yaml
+keast rollout status deploy -n metallb-system controller
+kwest apply -f https://raw.githubusercontent.com/metallb/metallb/v0.14.5/config/manifests/metallb-native.yaml
+kwest rollout status deploy -n metallb-system controller
+
+keast apply -f book/metallb/east-lb.yaml
+kwest apply -f book/metallb/west-lb.yaml
+
 kwest create namespace istio-system || true
 kwest create secret generic cacerts -n istio-system \
     --from-file=book/certs/west-cluster/ca-cert.pem \
