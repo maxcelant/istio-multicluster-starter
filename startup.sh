@@ -70,5 +70,11 @@ istioctl create-remote-secret --name="west-cluster" --context="kind-west-cluster
 istioctl install --context="kind-east-cluster" -y -f gateways/east-gw.yaml
 istioctl install --context="kind-west-cluster" -y -f gateways/west-gw.yaml
 
+kwest apply -n istio-system -f cert-manager/certificate.yaml
+keast apply -n istio-system -f cert-manager/certificate.yaml
+
+kwest apply -n istio-system -f cert-manager/issuer-west.yaml
+keast apply -n istio-system -f cert-manager/issuer-east.yaml
+
 kwest apply -n istio-system -f gateways/expose-services.yaml
 keast apply -n istio-system -f gateways/expose-services.yaml
