@@ -8,6 +8,11 @@ spec:
     accessLogFile: /dev/stdout
   profile: empty
   components:
+    pilot:
+      k8s:
+        env:
+        - name: AUTO_RELOAD_PLUGIN_CERTS
+          value: "true"
     ingressGateways:
     - name: istio-eastwestgateway
       label:

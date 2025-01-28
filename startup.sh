@@ -2,19 +2,27 @@
 
 set -euo pipefail
 
+METALLB_VERSION="v0.14.15"
+CERTMANAGER_VERSION="v1.16.3"
+
 kind create cluster --config "cluster/cluster-east.yaml" --name east-cluster || echo "Cluster already created."
 kind create cluster --config "cluster/cluster-west.yaml" --name west-cluster || echo "Cluster already created."
 
 alias keast='kubectl --context="kind-east-cluster"'
 alias kwest='kubectl --context="kind-west-cluster"'
 
-keast apply -f https://raw.githubusercontent.com/metallb/metallb/v0.14.5/config/manifests/metallb-native.yaml
+keast apply -f https://raw.githubusercontent.com/metallb/metallb/${METALLB_VERSION}/config/manifests/metallb-native.yaml
 keast rollout status deploy -n metallb-system controller
-kwest apply -f https://raw.githubusercontent.com/metallb/metallb/v0.14.5/config/manifests/metallb-native.yaml
+kwest apply -f https://raw.githubusercontent.com/metallb/metallb/${METALLB_VERSION}/config/manifests/metallb-native.yaml
 kwest rollout status deploy -n metallb-system controller
 
 keast apply -f metallb/east-lb.yaml
 kwest apply -f metallb/west-lb.yaml
+
+keast create ns cert-manager
+keast apply -f https://github.com/cert-manager/cert-manager/releases/download/${CERTMANAGER_VERSION}/cert-manager.yaml
+kwest create ns cert-manager
+kwest apply -f https://github.com/cert-manager/cert-manager/releases/download/${CERTMANAGER_VERSION}/cert-manager.yaml
 
 kwest create namespace istio-system 
 kwest create secret generic cacerts -n istio-system \

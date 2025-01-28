@@ -1,0 +1,17 @@
+apiVersion: cert-manager.io/v1
+kind: ClusterIssuer
+metadata:
+  name: vault-intermediate
+  namespace: cert-manager
+spec:
+  vault:
+    server: https://vault.yourdomain.com:8200
+    path: pki_int/sign/your-role-name
+    auth:
+      kubernetes:
+        role: your-vault-role
+        mountPath: kubernetes
+    caBundle: |
+      -----BEGIN CERTIFICATE-----
+      
+      -----END CERTIFICATE-----
