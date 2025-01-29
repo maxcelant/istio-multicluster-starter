@@ -4,7 +4,6 @@ set -e
 
 export VAULT_ADDR=http://vault:8200
 
-# give some time for Vault to start and be ready
 sleep 3
 
 MOUNTED_DIR=/certs

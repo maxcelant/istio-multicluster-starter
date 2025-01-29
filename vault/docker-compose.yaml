@@ -22,7 +22,7 @@ services:
       - kindnet
     image: vault-init:latest
     build:
-      context: vault-init
+      context: .
       dockerfile: Dockerfile
     volumes:
       - ./vault-init.sh:/vault-init.sh
