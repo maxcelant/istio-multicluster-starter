@@ -13,7 +13,7 @@ data:
            ttl 30
         }
         hosts {
-          "172.18.0.4" vault.example.com
+          172.18.0.4 vault.example.com
           fallthrough
         }        
         prometheus :9153
