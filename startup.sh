@@ -21,6 +21,7 @@ both_context "kubectl create namespace cert-manager"
 both_context "kubectl apply -f https://github.com/cert-manager/cert-manager/releases/download/${CERTMANAGER_VERSION}/cert-manager.yaml"
 both_context "kubectl create namespace istio-system"
 both_context "kubectl label namespace istio-system topology.istio.io/network='{REGION}-network'"
+both_context "kubectl apply -f cert-manager/vault-token-secret.yaml"
 both_context "istioctl install -y -f controlplanes/cluster-{REGION}.yaml"
 both_context "kubectl create namespace istioinaction"
 both_context "kubectl label namespace istioinaction istio-injection=enabled"
@@ -37,7 +38,7 @@ both_context "kubectl -n default apply -f apps/sleep.yaml"
 )
 
 both_context "kubectl create configmap coredns --from-file=cluster/coredns.yaml -n kube-system --save-config --dry-run=client -o yaml | kubectl apply -f -"
-
+both_context "kubectl apply -f cert-manager/issuer-{REGION}.yaml"
 
 WEST_CLUSTER_ID=$(docker ps --filter "name=west-cluster" --format "{{.ID}}")
 EAST_CLUSTER_ID=$(docker ps --filter "name=east-cluster" --format "{{.ID}}")

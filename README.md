@@ -4,8 +4,18 @@
 
 >![image](https://github.com/user-attachments/assets/4e05f0bc-e09f-4340-9fd4-7b43ca88bb52)
 
+### Prerequisites
+- `jq`
+- `kind`
+- `colima`
 
 ### How to run
+
+- Make sure you start your colima VM with the following command:
+
+```bash
+colima start --kubernetes -m 10 -c 6
+```
 
 **Note**: If you already have a clusters named `kind-east-cluster` and `kind-west-cluster`, then run `./teardown.sh` first.
 
@@ -19,7 +29,7 @@
 Run the following command in your **west** cluster. 
 
 ```bash
-❯ kubectl --context="kind-west-cluster" -n default exec deploy/sleep -c sleep -- curl -s webapp.istioinaction/api/catalog
+❯ kubectl --context="kind-east-cluster" -n default exec deploy/sleep -c sleep -- curl -s webapp.istioinaction/api/catalog
 ```
 
 You should recieve a JSON response.
